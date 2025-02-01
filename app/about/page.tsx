@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import GameLayout from "../components/GameLayout"
 import { motion, AnimatePresence } from "framer-motion"
-import { Download } from "lucide-react" // Using Lucide icon instead of react-icons
+import { Download } from "lucide-react"
 
 const sections = [
   {
@@ -127,16 +127,6 @@ export default function AboutPage() {
     setActiveSection(null)
   }
 
-  const handleDownloadClick = () => {
-    const resumePath = '/Om_Resume.pdf'
-    const link = document.createElement('a')
-    link.href = resumePath
-    link.download = 'Om_Kawale_Resume.pdf'
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-  }
-
   return (
     <GameLayout title="About Me">
       <motion.div
@@ -223,19 +213,18 @@ export default function AboutPage() {
         )}
       </AnimatePresence>
 
-      {/* Download Resume Button */}
-      <div className="fixed bottom-4 right-4 group">
-        <button
-          onClick={handleDownloadClick}
-          className="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-purple-600 to-purple-800 rounded-full shadow-lg transition-transform duration-300 transform hover:scale-110 hover:shadow-xl"
-          aria-label="Download Resume"
-        >
-          <span className="absolute right-14 bg-gray-800 px-2 py-1 rounded text-white text-sm opacity-0 transition-opacity duration-300 group-hover:opacity-100 whitespace-nowrap">
-            Download Resume
-          </span>
-          <Download className="text-white w-6 h-6" />
-        </button>
-      </div>
+      {/* Download Resume Link */}
+      <a
+        href="/Om_Resume.pdf"
+        download="Om_Kawale_Resume.pdf"
+        className="fixed bottom-4 right-4 flex items-center justify-center w-12 h-12 bg-gradient-to-r from-purple-600 to-purple-800 rounded-full shadow-lg transition-all duration-300 hover:scale-110 group"
+        aria-label="Download Resume"
+      >
+        <span className="absolute right-14 bg-gray-800 px-2 py-1 rounded text-white text-sm opacity-0 transition-opacity duration-300 group-hover:opacity-100 whitespace-nowrap">
+          Download Resume
+        </span>
+        <Download className="text-white w-6 h-6" />
+      </a>
     </GameLayout>
   )
 }
