@@ -9,7 +9,7 @@ const BACKGROUND_COLOR = "#000000"
 const BALL_COLOR = "#FFFFFF"
 const PADDLE_COLOR = "#FFFFFF"
 const LETTER_SPACING = 1
-const WORD_SPACING = 3
+const WORD_SPACING = 1
 
 const PIXEL_MAP: { [key: string]: number[][] } = {
   O: [
@@ -89,6 +89,13 @@ const PIXEL_MAP: { [key: string]: number[][] } = {
     [1, 0, 1, 0],
     [1, 0, 0, 1],
   ],
+  ' ': [
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+  ],
 }
 
 interface Pixel {
@@ -139,12 +146,12 @@ export default function PongGame() {
 
     const initializeGame = () => {
       const scale = scaleRef.current
-      const LARGE_PIXEL_SIZE = 8 * scale
+      const LARGE_PIXEL_SIZE = 9 * scale
       const SMALL_PIXEL_SIZE = 4 * scale
       const BALL_SPEED = 6 * scale
 
       pixelsRef.current = []
-      const words = ["OM KAWALE", "DEVELOPER"]
+      const words = ["OM  KAWALE", "DEVELOPER"]
 
       const calculateWordWidth = (word: string, pixelSize: number) => {
         return (
@@ -152,7 +159,8 @@ export default function PongGame() {
             const letterWidth = PIXEL_MAP[letter]?.[0]?.length ?? 0
             return width + letterWidth * pixelSize + LETTER_SPACING * pixelSize
           }, 0) -
-          LETTER_SPACING * pixelSize
+          LETTER_SPACING * pixelSize +
+          (word.split(" ").length - 1) * WORD_SPACING * pixelSize
         )
       }
 
@@ -173,10 +181,19 @@ export default function PongGame() {
 
       words.forEach((word, wordIndex) => {
         const pixelSize = wordIndex === 0 ? adjustedLargePixelSize : adjustedSmallPixelSize
-        const totalWidth = calculateWordWidth(word, pixelSize)
-        let startX = (canvas.width - totalWidth) / 2
+        const totalWordWidth = calculateWordWidth(word, pixelSize)
+        let startX = (canvas.width - totalWordWidth) / 2
+
+        if (wordIndex === 0) {
+          startX += 140
+        }
 
         word.split("").forEach((letter) => {
+          if (letter === ' ') {
+            startX += WORD_SPACING * pixelSize
+            return
+          }
+
           const pixelMap = PIXEL_MAP[letter]
           if (!pixelMap) return
 
