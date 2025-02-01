@@ -4,7 +4,6 @@ import { useState, useEffect } from "react"
 import GameLayout from "../components/GameLayout"
 import { motion, AnimatePresence } from "framer-motion"
 import { Download } from "lucide-react"
-import { FaIconName } from 'react-icons/fa';
 
 const sections = [
   {
