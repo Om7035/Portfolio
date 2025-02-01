@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react"
 import GameLayout from "../components/GameLayout"
 import { motion, AnimatePresence } from "framer-motion"
-import { FaFileDownload } from "react-icons/fa"
+import { Download } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
 const sections = [
   {
@@ -127,6 +128,21 @@ export default function AboutPage() {
     setActiveSection(null)
   }
 
+  const handleDownloadResume = () => {
+    // Create a link element
+    const link = document.createElement('a')
+    // Set the href to the resume file in the public folder
+    link.href = '/Om_Resume.pdf'
+    // Set download attribute
+    link.setAttribute('download', 'Om_Kawale_Resume.pdf')
+    // Append to body
+    document.body.appendChild(link)
+    // Trigger click
+    link.click()
+    // Remove link from body
+    document.body.removeChild(link)
+  }
+
   return (
     <GameLayout title="About Me">
       <motion.div
@@ -138,14 +154,14 @@ export default function AboutPage() {
         {sections.map((section) => (
           <motion.div
             key={section.id}
-            layout // Enables layout animations
+            layout
             initial={{ opacity: 1, y: 0, scale: 1 }}
             animate={{
               opacity: activeSection === null || activeSection === section.id ? 1 : 0.5,
               y: 0,
               scale: activeSection === null || activeSection === section.id ? 1 : 0.9,
             }}
-            whileHover={{ scale: 1.05 }} // Hover effect
+            whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.3, type: "spring", stiffness: 100 }}
             className={`bg-gray-800 p-6 rounded-lg shadow-lg cursor-pointer ${
               activeSection === section.id ? "z-20" : "z-0"
@@ -160,7 +176,6 @@ export default function AboutPage() {
         ))}
       </div>
 
-      {/* Overlay for Detailed Section */}
       <AnimatePresence>
         {activeSection && (
           <motion.div
@@ -177,7 +192,7 @@ export default function AboutPage() {
               exit={{ scale: 0.8, opacity: 0 }}
               transition={{ duration: 0.3, type: "spring", stiffness: 100 }}
               className="bg-gray-800 p-8 rounded-lg shadow-lg max-w-2xl w-full mx-4 relative"
-              onClick={(e) => e.stopPropagation()} // Prevent click from closing overlay
+              onClick={(e) => e.stopPropagation()}
             >
               <button
                 onClick={handleCloseOverlay}
@@ -214,20 +229,15 @@ export default function AboutPage() {
         )}
       </AnimatePresence>
 
-      {/* Resume Download Icon */}
-      <div className="fixed bottom-4 right-4 group">
-        <a
-          href="/Om_Resume%20(3).pdf" // Use URL encoding for spaces
-          download
-          className="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-purple-600 to-purple-800 rounded-full shadow-lg transition-transform duration-300 transform hover:scale-110 hover:shadow-xl"
-          aria-label="Download Resume"
-        >
-          <span className="absolute right-14 text-white text-lg opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-            Download Resume
-          </span>
-          <FaFileDownload className="text-white text-xl transition-transform duration-300" />
-        </a>
-      </div>
+      {/* Resume Download Button */}
+      <Button
+        onClick={handleDownloadResume}
+        className="fixed bottom-4 right-4 bg-purple-600 hover:bg-purple-700 text-white rounded-full p-3 shadow-lg transition-all duration-300 hover:scale-110"
+        variant="ghost"
+      >
+        <Download className="w-6 h-6" />
+        <span className="sr-only">Download Resume</span>
+      </Button>
     </GameLayout>
   )
 }
