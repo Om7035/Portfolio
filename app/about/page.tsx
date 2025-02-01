@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import GameLayout from "../components/GameLayout"
 import { motion, AnimatePresence } from "framer-motion"
+import { FaFileDownload } from "react-icons/fa"
 
 const sections = [
   {
@@ -212,6 +213,21 @@ export default function AboutPage() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Resume Download Icon */}
+      <div className="fixed bottom-4 right-4 group">
+        <a
+          href="/Om_Resume%20(3).pdf" // Use URL encoding for spaces
+          download
+          className="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-purple-600 to-purple-800 rounded-full shadow-lg transition-transform duration-300 transform hover:scale-110 hover:shadow-xl"
+          aria-label="Download Resume"
+        >
+          <span className="absolute right-14 text-white text-lg opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            Download Resume
+          </span>
+          <FaFileDownload className="text-white text-xl transition-transform duration-300" />
+        </a>
+      </div>
     </GameLayout>
   )
 }
